@@ -5,7 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using ShwubbApi;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://localhost:3000");
+builder.WebHost.UseUrls("http://0.0.0.0:3000");
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
