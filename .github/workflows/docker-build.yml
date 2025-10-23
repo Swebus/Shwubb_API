@@ -28,4 +28,4 @@ jobs:
 
     - name: Push Docker Image
       run: |
-        docker push sebu16/shwubb_api:latest
+        docker push sebus16/shwubb_api:latest
