@@ -1,5 +1,5 @@
-# Use official .NET 8 SDK image
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Use official .NET 9 SDK image
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
 # Copy csproj and restore
