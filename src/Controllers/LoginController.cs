@@ -16,7 +16,6 @@
 
     [ApiController]
     [Route("user/")]
-    [EnableCors("AllowFrontend")]
     public class LoginController : ControllerBase
     {
         private readonly AppDbContext _context;
