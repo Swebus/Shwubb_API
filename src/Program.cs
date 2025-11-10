@@ -7,7 +7,7 @@ using ShwubbApi;
 using ShwubbApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://0.0.0.0:3000");
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
