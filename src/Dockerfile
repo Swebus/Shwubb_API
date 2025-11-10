@@ -8,11 +8,11 @@ RUN dotnet restore
 
 # Copy everything else and build
 COPY . ./
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o /app/publish
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=build /app/out ./
-EXPOSE 5000
-ENTRYPOINT ["dotnet", "Shwubb_API.dll"]
+COPY --from=build /app/publish ./
+EXPOSE 3000
+ENTRYPOINT ["dotnet", "ShwubbAPI.dll"]
