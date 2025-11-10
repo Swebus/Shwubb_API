@@ -12,7 +12,6 @@
 
     [ApiController]
     [Route("posts/")]
-    [EnableCors("AllowFrontend")]
     public class PostsController : ControllerBase
     {
         private readonly AppDbContext _context;
