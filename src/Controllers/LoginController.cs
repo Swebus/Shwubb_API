@@ -17,19 +17,21 @@
     [Route("user/")]
     public class LoginController : ControllerBase
     {
+        private readonly AppDbContext _context;
         private readonly IConfiguration _config;
 
-        public LoginController(IConfiguration config)
+        public LoginController(IConfiguration config, AppDbContext context)
         {
             _config = config;
+            _context = context;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            using (var context = new AppDbContext())
+
             {
-                var user = context.Users.FirstOrDefault(u => u.Username == request.Username);
+                var user = _context.Users.FirstOrDefault(u => u.Username == request.Username);
 
                 if (user == null)
                 {
@@ -92,7 +94,6 @@
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterRequest request)
         {
-            using (var context = new AppDbContext())
             {
                 var emailValidator = new EmailAddressAttribute();
 
@@ -105,7 +106,7 @@
                     return BadRequest(new { message = "Invalid inputs" });
                 }
 
-                var existingUser = context.Users
+                var existingUser = _context.Users
                                   .FirstOrDefault(u => u.Username == request.Username || u.Email == request.Email);
                 
                 if (existingUser != null)
@@ -123,10 +124,10 @@
                     Email = request.Email,
                     Role = "User"
                 };
-                context.Users.Add(newUser);
-                context.SaveChanges();
+                _context.Users.Add(newUser);
+                _context.SaveChanges();
 
-                var userCheck = context.Users
+                var userCheck = _context.Users
                                   .FirstOrDefault(u => u.Username == request.Username);
 
                 if (userCheck != null)

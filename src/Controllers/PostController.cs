@@ -13,11 +13,13 @@
     [Route("posts/")]
     public class PostsController : ControllerBase
     {
+        private readonly AppDbContext _context;
         private readonly IConfiguration _config;
 
-        public PostsController(IConfiguration config)
+        public PostsController(IConfiguration config, AppDbContext context)
         {
             _config = config;
+            _context = context;
         }
 
         [Authorize]
@@ -35,8 +37,6 @@
                 }
             }
 
-            using (var context = new AppDbContext())
-            {
                 int userId = int.Parse(User.FindFirst("UserID")?.Value ?? "0");
 
                 string? imagePath = null;
@@ -67,23 +67,21 @@
                 Userid = userId,
                 CreatedAt = DateTime.Now
                 };
-                context.Posts.Add(newPost);
-                await context.SaveChangesAsync();
+                _context.Posts.Add(newPost);
+                await _context.SaveChangesAsync();
 
 
                 return Ok(new { Message= "Post uploaded successfully!"});
-            }
         }
+        
 
         [AllowAnonymous]
         [HttpGet("get")]
         public async Task<IActionResult> GetPosts([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            using (var context = new AppDbContext())
-            {
-                var totalPosts = await context.Posts.CountAsync();
+                var totalPosts = await _context.Posts.CountAsync();
 
-                var posts = await context.Posts
+                var posts = await _context.Posts
                     .Include(p => p.Author)
                     .OrderByDescending(p => p.CreatedAt)
                     .Skip((page - 1) * pageSize)
@@ -109,8 +107,6 @@
                     PageSize = pageSize,
                     Posts = posts
                 });
-            }
         }
-
     }
 }
