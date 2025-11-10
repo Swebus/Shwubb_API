@@ -3,6 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Security.Claims;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using ShwubbApi.Data;
@@ -11,6 +12,7 @@
 
     [ApiController]
     [Route("posts/")]
+    [EnableCors("AllowFrontend")]
     public class PostsController : ControllerBase
     {
         private readonly AppDbContext _context;

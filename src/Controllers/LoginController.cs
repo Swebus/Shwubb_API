@@ -1,20 +1,22 @@
 ﻿namespace ShwubbApi.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using ShwubbApi.Data;
-    using ShwubbApi.Models;
-    using ShwubbApi.Logic;
-    using Microsoft.AspNetCore.Identity;
-    using LoginRequest = Models.LoginRequest;
-    using System.Security.Claims;
-    using Microsoft.IdentityModel.Tokens;
-    using System.Text;
-    using System.IdentityModel.Tokens.Jwt;
-    using Microsoft.AspNetCore.Authorization;
     using System.ComponentModel.DataAnnotations;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
+    using System.Text;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Cors;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.IdentityModel.Tokens;
+    using ShwubbApi.Data;
+    using ShwubbApi.Logic;
+    using ShwubbApi.Models;
+    using LoginRequest = Models.LoginRequest;
 
     [ApiController]
     [Route("user/")]
+    [EnableCors("AllowFrontend")]
     public class LoginController : ControllerBase
     {
         private readonly AppDbContext _context;
