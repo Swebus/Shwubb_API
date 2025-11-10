@@ -15,4 +15,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build /app/publish ./
 EXPOSE 3000
-ENTRYPOINT ["dotnet", "ShwubbAPI.dll"]
+ENTRYPOINT ["dotnet", "ShwubbApi.dll"]
