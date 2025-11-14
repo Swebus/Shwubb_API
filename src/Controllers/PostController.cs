@@ -93,8 +93,7 @@
                         p.Title,
                         p.Content,
                         ImageUrl = p.ImagePath != null
-                            ? $"{Request.Scheme}://{Request.Host}/images{p.ImagePath}"
-                            //? $"{_config["AppSettings:ImageBaseUrl"].TrimEnd('/')}{p.ImagePath}"
+                            ? $"{_config["AppSettings:ImageBaseUrl"].TrimEnd('/')}/{p.ImagePath.TrimStart('/')}"
                             : null,
                         Username = p.Author.Username,
                         p.Userid,
