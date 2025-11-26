@@ -107,7 +107,61 @@
                     Page = page,
                     PageSize = pageSize,
                     Posts = posts
+                    
                 });
         }
+        [Authorize]
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeletePost([FromForm] PostDelRequest request)
+        {
+            var username = HttpContext.User.Identity.Name;
+
+            if (request.Postid <= 0)
+            {
+                return BadRequest(new { Message = "Invalid Post ID." });
+            }
+
+            var query = _context.Posts.AsQueryable();
+
+            if (request.Postid != null)
+            {
+                query = query.Where(p => p.Postid = request.Postid);
+            }
+            else if (userId == null)
+            {
+                return BadRequest(new { Message = "UserId query parameter is required." });
+            }
+
+            var totalPosts = await query.CountAsync();
+
+            var posts = await query
+                .Include(p => p.Author)
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new
+                {
+                    p.Postid,
+                    p.Title,
+                    p.Content,
+                    ImageUrl = p.ImagePath != null
+                        ? $"{_config["AppSettings:ImageBaseUrl"].TrimEnd('/')}/{p.ImagePath.TrimStart('/')}"
+                        : null,
+                    Username = p.Author.Username,
+                    p.Userid,
+                    p.CreatedAt
+                })
+                .ToListAsync();
+
+            return Ok(new
+            {
+                TotalPosts = totalPosts,
+                Page = page,
+                PageSize = pageSize,
+                Posts = posts
+            });
+
+        }
+
     }
 }
